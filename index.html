@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search Puzzle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .word-search-container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .word-search-grid {
+            display: grid;
+            grid-template-columns: repeat(15, 30px);
+            grid-template-rows: repeat(15, 30px);
+            gap: 2px;
+            background-color: #fff;
+            border: 2px solid #000;
+            margin: 20px 0;
+        }
+        .word-search-cell {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .highlighted {
+            background-color: #f9e10b;
+        }
+        .word-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .word-list li {
+            font-size: 18px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Word Search Puzzle</h1>
+    <div class="word-search-container">
+        <div class="word-search-grid" id="grid"></div>
+        <div class="word-list">
+            <h3>Words to Find:</h3>
+            <ul>
+                <li>New York</li>
+                <li>Pennsylvania</li>
+                <li>West Virginia</li>
+                <li>Virginia</li>
+                <li>North Carolina</li>
+                <li>South Carolina</li>
+                <li>Georgia</li>
+                <li>Florida</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const words = [
+            "NEWYORK", "PENNSYLVANIA", "WESTVIRGINIA", "VIRGINIA", 
+            "NORTHCAROLINA", "SOUTHCAROLINA", "GEORGIA", "FLORIDA"
+        ];
+        const gridSize = 15;
+        const grid = document.getElementById('grid');
+
+        // Create an empty grid
+        let gridArray = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
+
+        // Function to place words in the grid
+        function placeWord(word) {
+            const wordLength = word.length;
+            let placed = false;
+
+            while (!placed) {
+                // Random starting position and direction
+                const row = Math.floor(Math.random() * gridSize);
+                const col = Math.floor(Math.random() * gridSize);
+                const direction = Math.floor(Math.random() * 2); // 0 - Horizontal, 1 - Vertical
+
+                if (direction === 0) { // Horizontal
+                    if (col + wordLength <= gridSize && !wordFits(row, col, word, direction)) {
+                        for (let i = 0; i < wordLength; i++) {
+                            gridArray[row][col + i] = word[i];
+                        }
+                        placed = true;
+                    }
+                } else { // Vertical
+                    if (row + wordLength <= gridSize && !wordFits(row, col, word, direction)) {
+                        for (let i = 0; i < wordLength; i++) {
+                            gridArray[row + i][col] = word[i];
+                        }
+                        placed = true;
+                    }
+                }
+            }
+        }
+
+        // Check if word fits
+        function wordFits(row, col, word, direction) {
+            for (let i = 0; i < word.length; i++) {
+                if (direction === 0) {
+                    if (gridArray[row][col + i] !== '') return true;
+                } else {
+                    if (gridArray[row + i][col] !== '') return true;
+                }
+            }
+            return false;
+        }
+
+        // Fill remaining spaces with random letters
+        function fillGrid() {
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (gridArray[i][j] === '') {
+                        gridArray[i][j] = String.fromCharCode(Math.floor(Math.random() * 26) + 65); // A-Z
+                    }
+                }
+            }
+        }
+
+        // Generate grid UI
+        function generateGrid() {
+            grid.innerHTML = '';
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('word-search-cell');
+                    cell.textContent = gridArray[i][j];
+                    cell.setAttribute('data-row', i);
+                    cell.setAttribute('data-col', j);
+                    cell.addEventListener('click', onCellClick);
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        // Handle cell click (for word highlighting)
+        function onCellClick(event) {
+            const cell = event.target;
+            cell.classList.toggle('highlighted'); // Toggle highlight on each click
+        }
+
+        // Place words and fill grid
+        words.forEach(placeWord);
+        fillGrid();
+        generateGrid();
+    </script>
+
+</body>
+</html>
