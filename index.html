@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emma's Fun Site</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,19 +12,19 @@
             padding: 20px;
             background-color: #f0f0f0;
         }
+
         h1 {
             text-align: center;
         }
-        .game-section {
-            margin-bottom: 50px;
-        }
-        /* Word Search Styles */
+
+        /* Word Search Game Styles */
         .word-search-container {
             display: flex;
             justify-content: center;
             flex-direction: column;
             align-items: center;
         }
+
         .word-search-grid {
             display: grid;
             grid-template-columns: repeat(15, 30px);
@@ -33,6 +34,7 @@
             border: 2px solid #000;
             margin: 20px 0;
         }
+
         .word-search-cell {
             width: 30px;
             height: 30px;
@@ -44,26 +46,43 @@
             border: 1px solid #ddd;
             cursor: pointer;
         }
+
         .highlighted {
             background-color: #f9e10b;
         }
+
         .word-list {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .word-list li {
             font-size: 18px;
             margin: 5px;
         }
-        /* Odd One Out Styles */
-        .grid {
+
+        /* Odd One Out Game Styles */
+        .odd-one-out-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            text-align: center; /* Center-align the text */
+        }
+
+        .odd-one-out-grid {
             display: grid;
             grid-template-columns: repeat(5, 100px);
             grid-template-rows: repeat(5, 100px);
             gap: 5px;
+            margin: 0 auto; /* Center the grid horizontally */
         }
-        .square {
+
+        .odd-one-out-square {
             width: 100px;
             height: 100px;
             cursor: pointer;
@@ -71,40 +90,34 @@
     </style>
 </head>
 <body>
-    <div class="game-section">
-        <h1>Word Search Puzzle</h1>
-        <div class="word-search-container">
-            <div class="word-search-grid" id="word-search-grid"></div>
-            <div class="word-list">
-                <h3>Words to Find:</h3>
-                <ul>
-                    <li>New York</li>
-                    <li>Pennsylvania</li>
-                    <li>West Virginia</li>
-                    <li>Virginia</li>
-                    <li>North Carolina</li>
-                    <li>South Carolina</li>
-                    <li>Georgia</li>
-                    <li>Florida</li>
-                </ul>
-            </div>
+
+    <h1>Word Search Puzzle</h1>
+    <div class="word-search-container">
+        <div class="word-search-grid" id="grid"></div>
+        <div class="word-list">
+            <h3>Words to Find:</h3>
+            <ul>
+                <li>New York</li>
+                <li>Pennsylvania</li>
+                <li>West Virginia</li>
+                <li>Virginia</li>
+                <li>North Carolina</li>
+                <li>South Carolina</li>
+                <li>Georgia</li>
+                <li>Florida</li>
+            </ul>
         </div>
     </div>
 
-    <div class="game-section">
-        <h1>Odd One Out</h1>
-        <div class="grid" id="color-grid"></div>
-        <p>Score: <span id="score">0</span></p>
-    </div>
-
     <script>
-        // Word Search Script
+        // Word Search Game Script
         const words = [
             "NEWYORK", "PENNSYLVANIA", "WESTVIRGINIA", "VIRGINIA", 
             "NORTHCAROLINA", "SOUTHCAROLINA", "GEORGIA", "FLORIDA"
         ];
         const gridSize = 15;
-        const wordSearchGrid = document.getElementById('word-search-grid');
+        const grid = document.getElementById('grid');
+
         let gridArray = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
 
         function placeWord(word) {
@@ -116,20 +129,31 @@
                 const col = Math.floor(Math.random() * gridSize);
                 const direction = Math.floor(Math.random() * 2);
 
-                if (direction === 0 && col + wordLength <= gridSize && !wordFits(row, col, word, direction)) {
-                    for (let i = 0; i < wordLength; i++) gridArray[row][col + i] = word[i];
-                    placed = true;
-                } else if (direction === 1 && row + wordLength <= gridSize && !wordFits(row, col, word, direction)) {
-                    for (let i = 0; i < wordLength; i++) gridArray[row + i][col] = word[i];
-                    placed = true;
+                if (direction === 0) {
+                    if (col + wordLength <= gridSize && !wordFits(row, col, word, direction)) {
+                        for (let i = 0; i < wordLength; i++) {
+                            gridArray[row][col + i] = word[i];
+                        }
+                        placed = true;
+                    }
+                } else {
+                    if (row + wordLength <= gridSize && !wordFits(row, col, word, direction)) {
+                        for (let i = 0; i < wordLength; i++) {
+                            gridArray[row + i][col] = word[i];
+                        }
+                        placed = true;
+                    }
                 }
             }
         }
 
         function wordFits(row, col, word, direction) {
             for (let i = 0; i < word.length; i++) {
-                if (direction === 0 && gridArray[row][col + i] !== '') return true;
-                if (direction === 1 && gridArray[row + i][col] !== '') return true;
+                if (direction === 0) {
+                    if (gridArray[row][col + i] !== '') return true;
+                } else {
+                    if (gridArray[row + i][col] !== '') return true;
+                }
             }
             return false;
         }
@@ -137,100 +161,96 @@
         function fillGrid() {
             for (let i = 0; i < gridSize; i++) {
                 for (let j = 0; j < gridSize; j++) {
-                    if (gridArray[i][j] === '') gridArray[i][j] = String.fromCharCode(Math.random() * 26 + 65);
+                    if (gridArray[i][j] === '') {
+                        gridArray[i][j] = String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+                    }
                 }
             }
         }
 
-        function generateWordSearchGrid() {
-            wordSearchGrid.innerHTML = '';
+        function generateGrid() {
+            grid.innerHTML = '';
             for (let i = 0; i < gridSize; i++) {
                 for (let j = 0; j < gridSize; j++) {
                     const cell = document.createElement('div');
                     cell.classList.add('word-search-cell');
                     cell.textContent = gridArray[i][j];
-                    cell.addEventListener('click', () => cell.classList.toggle('highlighted'));
-                    wordSearchGrid.appendChild(cell);
+                    cell.setAttribute('data-row', i);
+                    cell.setAttribute('data-col', j);
+                    cell.addEventListener('click', onCellClick);
+                    grid.appendChild(cell);
                 }
             }
         }
 
+        function onCellClick(event) {
+            const cell = event.target;
+            cell.classList.toggle('highlighted');
+        }
+
         words.forEach(placeWord);
         fillGrid();
-        generateWordSearchGrid();
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // Odd One Out Script
-        const colorGrid = document.getElementById('color-grid');
+        generateGrid();
+    </script>
+
+    <h1>Odd One Out</h1>
+    <div class="odd-one-out-container">
+        <h1>Score: <span id="score">0</span></h1>
+        <div class="odd-one-out-grid" id="oddGrid"></div>
+    </div>
+
+    <script>
+        // Odd One Out Game Script
+        const oddGrid = document.getElementById('oddGrid');
         const scoreElement = document.getElementById('score');
         let score = 0;
 
         function getRandomColor() {
-            return {
-                r: Math.random() * 256,
-                g: Math.random() * 256,
-                b: Math.random() * 256
-            };
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return { r, g, b };
         }
 
-        function generateOddGrid() {
-            colorGrid.innerHTML = '';
+        function colorToString(color) {
+            return `rgb(${color.r}, ${color.g}, ${color.b})`;
+        }
+
+        function generateSimilarColor(baseColor, variation) {
+            const r = Math.min(255, Math.max(0, baseColor.r + (Math.random() < 0.5 ? -variation : variation)));
+            const g = Math.min(255, Math.max(0, baseColor.g + (Math.random() < 0.5 ? -variation : variation)));
+            const b = Math.min(255, Math.max(0, baseColor.b + (Math.random() < 0.5 ? -variation : variation)));
+            return { r, g, b };
+        }
+
+        function generateGrid() {
+            oddGrid.innerHTML = '';
             const baseColor = getRandomColor();
             const variation = Math.max(50 - score * 2.5, 10);
-            const oddColor = {
-                r: baseColor.r + (Math.random() < 0.5 ? -variation : variation),
-                g: baseColor.g + (Math.random() < 0.5 ? -variation : variation),
-                b: baseColor.b + (Math.random() < 0.5 ? -variation : variation)
-            };
+            const oddColor = generateSimilarColor(baseColor, variation);
             const oddIndex = Math.floor(Math.random() * 25);
 
             for (let i = 0; i < 25; i++) {
                 const square = document.createElement('div');
-                square.classList.add('square');
-                square.style.backgroundColor = `rgb(${i === oddIndex ? oddColor.r : baseColor.r}, ${i === oddIndex ? oddColor.g : baseColor.g}, ${i === oddIndex ? oddColor.b : baseColor.b})`;
+                square.classList.add('odd-one-out-square');
+                square.style.backgroundColor = colorToString(i === oddIndex ? oddColor : baseColor);
                 square.addEventListener('click', () => {
-                    if (i === oddIndex) score++;
-                    else score = 0;
-                    scoreElement.textContent = score;
-                    generateOddGrid();
+                    if (i === oddIndex) {
+                        score++;
+                        scoreElement.textContent = score;
+                        generateGrid();
+                    } else {
+                        score = 0;
+                        scoreElement.textContent = score;
+                        generateGrid();
+                    }
                 });
-                colorGrid.appendChild(square);
+                oddGrid.appendChild(square);
             }
         }
 
-        generateOddGrid();
-        <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odd One Out</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                margin: 0;
-                background-color: #f0f0f0;
-                text-align: center; /* Center-align the text */
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 100px);
-            grid-template-rows: repeat(5, 100px);
-            gap: 5px;
-            margin: 0 auto; /* Center the grid horizontally */
-        }
-
-        .square {
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-
+        generateGrid();
     </script>
+
 </body>
 </html>
