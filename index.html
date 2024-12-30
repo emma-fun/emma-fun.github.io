@@ -158,7 +158,7 @@
         words.forEach(placeWord);
         fillGrid();
         generateWordSearchGrid();
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
         // Odd One Out Script
         const colorGrid = document.getElementById('color-grid');
         const scoreElement = document.getElementById('score');
@@ -198,6 +198,39 @@
         }
 
         generateOddGrid();
+        <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odd One Out</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+                text-align: center; /* Center-align the text */
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 100px);
+            grid-template-rows: repeat(5, 100px);
+            gap: 5px;
+            margin: 0 auto; /* Center the grid horizontally */
+        }
+
+        .square {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
     </script>
 </body>
 </html>
