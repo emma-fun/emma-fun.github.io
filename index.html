@@ -4,35 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emma's Fun Site</title>
-
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f0f0f0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
         h1 {
             text-align: center;
+            margin-top: 0;
         }
 
-        h2 {
-            text-align: center;
-        }
-        
-        h6 {
-            text-align: center;
-        }
-
-        /* Word Search Game Styles */
+        /* Word Search Styles */
         .word-search-container {
             display: flex;
             justify-content: center;
             flex-direction: column;
             align-items: center;
+            margin-top: 50px;
         }
-
         .word-search-grid {
             display: grid;
             grid-template-columns: repeat(15, 30px);
@@ -42,7 +37,6 @@
             border: 2px solid #000;
             margin: 20px 0;
         }
-
         .word-search-cell {
             width: 30px;
             height: 30px;
@@ -54,74 +48,182 @@
             border: 1px solid #ddd;
             cursor: pointer;
         }
-
         .highlighted {
             background-color: #f9e10b;
         }
-
         .word-list {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         .word-list li {
             font-size: 18px;
             margin: 5px;
         }
 
         /* Odd One Out Game Styles */
-        .odd-one-out-container {
+        .odd-game-container {
+            margin-top: 50px;
+            text-align: center;
             display: flex;
+            justify-content: center; 
+            width: 100%;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            text-align: center; /* Center-align the text */
         }
 
-        .odd-one-out-grid {
+        .grid {
             display: grid;
             grid-template-columns: repeat(5, 100px);
             grid-template-rows: repeat(5, 100px);
             gap: 5px;
-            margin: 0 auto; /* Center the grid horizontally */
+            justify-content: center;
         }
-
-        .odd-one-out-square {
+        .square {
             width: 100px;
             height: 100px;
             cursor: pointer;
+        }
+
+        /* Sprite Styles */
+        #sprite {
+            position: fixed;
+            top: 0;
+            left: 20px;
+            width: 40px;
+            height: 80px;
+            background-color: #8B4513;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        /* Message Box Styles */
+        #message-box {
+            position: fixed;
+            top: 0;
+            left: 80px;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            width: 250px;
+            text-align: center;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            padding-top: 100px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #sprite {
+            position: fixed;
+            top: 0;
+            left: 20px;
+            width: 40px;
+            height: 100px;
+            background-color: #ADD2CA; /* Body color */
+            border-radius: 10px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Head of the sprite */
+        #sprite::before {
+            content: '';
+            position: absolute;
+            top: -20px; /* Position above the body */
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background-color: #FFD700; /* Head color (golden) */
+            border-radius: 50%; /* Circle shape for head */
+        }
+
+        /* Arms of the sprite */
+        #sprite .arms {
+            position: absolute;
+            top: 25px; /* Adjust arm height */
+            width: 40px;
+            height: 10px;
+            background-color: #69779A; /* Arm color */
+            border-radius: 5px;
+        }
+
+        /* Legs of the sprite */
+        #sprite .legs {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            height: 20px;
+            background-color: #000; /* Leg color */
+            border-radius: 5px;
+        }
+
+        /* Hair of the sprite */
+        #sprite .hair {
+            position: absolute;
+            top: -10px; /* Position hair above the head */
+            left: 5px;
+            width: 30px;
+            height: 10px;
+            background-color: #8B4513; /* Hair color (brown) */
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
     <h1>Emma's Fun Site</h1>
-    <br>
-    <br>
-    <br><h2>Word Search</h2>
-    <div class="word-search-container">
-        <div class="word-search-grid" id="grid"></div>
-        <div class="word-list">
-            <h3>Words to Find:</h3>
-            <ul>
-                <li>New York</li>
-                <li>Pennsylvania</li>
-                <li>West Virginia</li>
-                <li>Virginia</li>
-                <li>North Carolina</li>
-                <li>South Carolina</li>
-                <li>Georgia</li>
-                <li>Florida</li>
-            </ul>
+
+    <div class="content-wrapper">
+        <!-- Word Search Game -->
+        <div class="word-search-container" id="word-search-section">
+            <div class="game-title">Word Search</div>
+            <div class="word-search-grid" id="grid"></div>
+            <div class="word-list">
+                <h3>Words to Find:</h3>
+                <ul>
+                    <li>New York</li>
+                    <li>Pennsylvania</li>
+                    <li>West Virginia</li>
+                    <li>Virginia</li>
+                    <li>North Carolina</li>
+                    <li>South Carolina</li>
+                    <li>Georgia</li>
+                    <li>Florida</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Odd One Out Game -->
+        <div class="odd-game-container" id="odd-one-out-section">
+            <div class="game-title">Odd One Out</div>
+            <div class="score">Score: <span id="score">0</span></div>
+            <div class="grid" id="odd-grid"></div>
         </div>
     </div>
 
+    <!-- Sprite and Message Box -->
+    <div id="sprite"></div>
+    <div id="message-box"></div>
+
     <script>
-        // Word Search Game Script
+        // Word Search Game Logic
         const words = [
             "NEWYORK", "PENNSYLVANIA", "WESTVIRGINIA", "VIRGINIA", 
             "NORTHCAROLINA", "SOUTHCAROLINA", "GEORGIA", "FLORIDA"
@@ -202,18 +304,9 @@
         words.forEach(placeWord);
         fillGrid();
         generateGrid();
-    </script>
 
-    <h1>Odd One Out</h1>
-    <br><h6>my best is 29 but i misclicked on 30 so really its 30+ ;) - sam</h6>
-    <div class="odd-one-out-container">
-        <h1>Score: <span id="score">0</span></h1>
-        <div class="odd-one-out-grid" id="oddGrid"></div>
-    </div>
-
-    <script>
-        // Odd One Out Game Script
-        const oddGrid = document.getElementById('oddGrid');
+        // Odd One Out Game Logic
+        const oddGrid = document.getElementById('odd-grid');
         const scoreElement = document.getElementById('score');
         let score = 0;
 
@@ -235,7 +328,7 @@
             return { r, g, b };
         }
 
-        function generateGrid() {
+        function generateOddGrid() {
             oddGrid.innerHTML = '';
             const baseColor = getRandomColor();
             const variation = Math.max(50 - score * 2.5, 10);
@@ -244,25 +337,71 @@
 
             for (let i = 0; i < 25; i++) {
                 const square = document.createElement('div');
-                square.classList.add('odd-one-out-square');
-                square.style.backgroundColor = colorToString(i === oddIndex ? oddColor : baseColor);
-                square.addEventListener('click', () => {
-                    if (i === oddIndex) {
-                        score++;
-                        scoreElement.textContent = score;
-                        generateGrid();
-                    } else {
-                        score = 0;
-                        scoreElement.textContent = score;
-                        generateGrid();
-                    }
-                });
+                square.classList.add('square');
+                square.style.backgroundColor = i === oddIndex ? colorToString(oddColor) : colorToString(baseColor);
+                square.addEventListener('click', () => onSquareClick(i === oddIndex));
                 oddGrid.appendChild(square);
             }
         }
 
-        generateGrid();
-    </script>
+        function onSquareClick(isOdd) {
+            if (isOdd) {
+                score++;
+                scoreElement.textContent = score;
+                generateOddGrid();
+            }
+        }
 
+        generateOddGrid();
+
+        // Sprite and Message Logic
+        const sprite = document.getElementById('sprite');
+        const messageBox = document.getElementById('message-box');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const sectionHeight = totalHeight / 10;
+            const currentSection = Math.floor(scrollTop / sectionHeight) + 1;
+
+            // Sprite movement
+            const speedFactor = 0.4;
+            const spritePosition = scrollTop * speedFactor;
+            sprite.style.top = `${spritePosition}px`;
+
+            // Show messages based on scroll position
+            switch (currentSection) {
+                case 1:
+                    showMessage("Welcome to Emma's Place!");
+                    break;
+                case 2:
+                    showMessage("Welcome to Emma's Place!");
+                    break;
+                case 3:
+                    showMessage("Word Search time!");
+                    break;
+                case 4:
+                    showMessage("Word Search time!");
+                    break;
+                case 8:
+                    showMessage("Guess which color is different!");
+                    break;
+                case 9:
+                    showMessage("Guess which color is different!");
+                    break;
+                case 10:
+                    showMessage("Guess which color is different!");
+                    break;
+                default:
+                    messageBox.style.display = 'none';
+            }
+        });
+
+        function showMessage(text) {
+            messageBox.textContent = text;
+            messageBox.style.display = 'block';
+            messageBox.style.top = `${sprite.offsetTop + 15}px`; // Position the message below the sprite
+        }
+    </script>
 </body>
 </html>
