@@ -306,7 +306,7 @@
         generateGrid();
 
         // Odd One Out Game Logic
-        const oddGrid = document.getElementById('odd-grid');
+       const oddGrid = document.getElementById('odd-grid');
         const scoreElement = document.getElementById('score');
         let score = 0;
 
@@ -338,21 +338,24 @@
             for (let i = 0; i < 25; i++) {
                 const square = document.createElement('div');
                 square.classList.add('square');
-                square.style.backgroundColor = i === oddIndex ? colorToString(oddColor) : colorToString(baseColor);
-                square.addEventListener('click', () => onSquareClick(i === oddIndex));
+                square.style.backgroundColor = colorToString(i === oddIndex ? oddColor : baseColor);
+                square.addEventListener('click', () => {
+                    if (i === oddIndex) {
+                        score++;
+                        scoreElement.textContent = score;
+                        generateOddGrid();
+                    } else {
+                        score = 0;
+                        scoreElement.textContent = score;
+                        generateOddGrid();
+                    }
+                });
                 oddGrid.appendChild(square);
             }
         }
 
-        function onSquareClick(isOdd) {
-            if (isOdd) {
-                score++;
-                scoreElement.textContent = score;
-                generateOddGrid();
-            }
-        }
-
         generateOddGrid();
+
 
         // Sprite and Message Logic
         const sprite = document.getElementById('sprite');
