@@ -9,13 +9,18 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f0f0f0;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-image: url("https://i.imgur.com/lIPJZov.jpeg");
+            background-size: 100% auto; /* Makes sure the width fits, height adjusts */
+            background-repeat: no-repeat; /* Prevents tiling */
+            background-position: top center; /* Starts the image at the top */
+            background-attachment: scroll; /* Allows the image to scroll with the page */
+            min-height: 100vh; /* Ensures the body is at least the height of the screen */
         }
         h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+        h2 {
             text-align: center;
             margin-top: 0;
         }
@@ -193,7 +198,7 @@
 </head>
 <body>
 
-    <h1>Emma's Place</h1>
+    <h1>Emma's Fun Place</h1>
 
     <div class="content-wrapper">
         <!-- Word Search Game -->
@@ -201,16 +206,9 @@
             <div class="game-title">Word Search</div>
             <div class="word-search-grid" id="grid"></div>
             <div class="word-list">
-                <h3>Words to Find:</h3>
                 <ul>
-                    <li>New Challenge!</li>
-                    <li></li>
-                    <li>See how many words</li>
-                    <li>you can find that</li>
-                    <li>fit the category:</li>
-                    <li>People</li>
-                    <li></li>
-                    <li>(hint: there is 6 words to find!)</li>
+                    <h3><i><b>You</b></i> themed word search</h3>
+                    <h3>There is 7 words to find!</h3>
                 </ul>
             </div>
         </div>
@@ -233,8 +231,8 @@
     <script>
         // Word Search Game Logic
         const words = [
-            "GIRAFFE", "ELEPHANT", "ZEBRA", "RHINO", 
-            "SNAKE", "LION", "HIPPO"
+            "ALLURE", "ENCHAT", "ENAMOUR", "ATTRACT", 
+            "CHARM", "FASCINATE", "CAPTIVATE"
         ];
         const gridSize = 15;
         const grid = document.getElementById('grid');
@@ -383,29 +381,28 @@
             // Show messages based on scroll position
             switch (currentSection) {
                 case 1:
-                    showMessage("Harry Potter 3 soon");
+                    showMessage("Hi Emma!");
                     break;
                 case 2:
-                    showMessage("Harry Potter 3 soon");
+                    showMessage("Hi Emma!");
                     break;
                 case 3:
-                    showMessage("Harry Potter 3 soon");
+                    showMessage("Glad you are back!");
                     break;
                 case 4:
-                    showMessage("Record is 152");
+                    showMessage("Glad you are back");
                     break;
-                case 6:
-                    showMessage("Record is 152");
                 case 7:
-                    showMessage("Record is 152");
+                    showMessage("https://shorturl.at/hvu6l");
+                    break;
                 case 8:
-                    showMessage("Record is 152");
+                    showMessage("https://shorturl.at/hvu6l");
                     break;
                 case 9:
-                    showMessage("Inside Jokes");
+                    showMessage("https://shorturl.at/hvu6l");
                     break;
                 case 10:
-                    showMessage("Inside Jokes");
+                    showMessage("https://shorturl.at/hvu6l");
                     break;
                 default:
                     messageBox.style.display = 'none';
@@ -421,8 +418,11 @@
     </script>
 <br>
 <br>
-<h2> Finally found a way to add a crossword! </h2>
-    <iframe width="500" height="500" style="border:3px solid black; margin:auto; display:block" frameborder="0" src="https://crosswordlabs.com/embed/inside-jokes-99"></iframe>
+<h2>Hopefully this crossword is harder for you</h2>
+
+            <br>
+            <br>
+    <iframe width="500" height="500" style="border:3px solid black; margin:auto; display:block" frameborder="0" src="https://crosswordlabs.com/embed/test-35576"></iframe>
 
 </body>
 </html>
