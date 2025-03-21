@@ -193,7 +193,31 @@
             height: 10px;
             background-color: #8B4513; /* Hair color (brown) */
             border-radius: 5px;
+
+        /* music player style */
         }
+        #music-player {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        button {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 8px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #777;
+        }
+
     </style>
 </head>
 <body>
@@ -227,6 +251,17 @@
     <!-- Sprite and Message Box -->
     <div id="sprite"></div>
     <div id="message-box"></div>
+
+
+    <!-- Music body stuff -->
+    <div id="music-player">
+        <p id="song-title">Now Playing: Song 1</p>
+        <audio id="audio-player" controls></audio>
+        <br>
+        <button onclick="prevSong()">⏮️ Prev</button>
+        <button onclick="playPause()">▶️/⏸️</button>
+        <button onclick="nextSong()">⏭️ Next</button>
+    </div>
 
     <script>
         // Word Search Game Logic
@@ -416,6 +451,53 @@
         }
 
     </script>
+
+
+    <script>
+        // 🎵 Playlist (Add Google Drive direct links here)
+        const playlist = [
+            { title: "Butterflies", url: "https://www.dropbox.com/scl/fi/3zqckrpdahpq3ewl5pawr/butterflies.mp3?rlkey=upfy4v2pxrjktzf4dtmhx8akz&st=xysjzu8l&raw=1" },
+            { title: "Romeo and Juliett", url: "https://www.dropbox.com/scl/fi/u130zyg6ac6mk09kwkizl/Peter-McPoland-Romeo-Juliet-Official-Audio.mp3?rlkey=xylygo5yjd4xp6hfkax03dpl8&st=23fkup6x&raw=1" },
+            { title: "Iris", url: "https://www.dropbox.com/scl/fi/y0mtua713io3ex2chp0hn/Iris.mp3?rlkey=0jgtn85ksjcmdk9is2wlptxb8&st=rt7bx2ap&raw=1" }
+        ];
+
+
+        let currentIndex = 0;
+        const audioPlayer = document.getElementById("audio-player");
+        const songTitle = document.getElementById("song-title");
+
+        function loadSong(index) {
+            audioPlayer.src = playlist[index].url;
+            songTitle.textContent = "Now Playing: " + playlist[index].title;
+            audioPlayer.play();
+        }
+
+        function nextSong() {
+            currentIndex = (currentIndex + 1) % playlist.length;
+            loadSong(currentIndex);
+        }
+
+        function prevSong() {
+            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentIndex);
+        }
+
+        function playPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+        }
+
+        // Load the first song on page load
+        loadSong(currentIndex);
+
+        // Auto-play next song when the current one ends
+        audioPlayer.addEventListener("ended", nextSong);
+    </script>
+    
+
 <br>
 <br>
 <h2>Hopefully this crossword is harder for you</h2>
